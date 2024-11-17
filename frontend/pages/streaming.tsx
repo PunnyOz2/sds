@@ -150,8 +150,8 @@ const Streaming: React.FC = () => {
     };
     
     
-    //peerConnectionRef.current = new RTCPeerConnection(configuration);
-    peerConnectionRef.current = new RTCPeerConnection();
+    peerConnectionRef.current = new RTCPeerConnection(configuration);
+    //peerConnectionRef.current = new RTCPeerConnection();
 
     // Conneting to remote peer
     peerConnectionRef.current.onicecandidate = (event) => {
