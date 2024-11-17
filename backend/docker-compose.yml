@@ -5,9 +5,6 @@ services:
         ports:
             - 5000:5000
         container_name: "deepgi_backend"
-        depends_on:
-            db:
-                condition: service_healthy
         volumes:
             - .:/app
         networks:
@@ -29,23 +26,23 @@ services:
         #                 - utility # nvidia-smi
         #                 - compute # CUDA
         #                 - video   # N
-    db:
-        image: "mysql"
-        ports:
-            - 3306:3306
-        container_name: "deepgi_database"
-        environment:
-            - MYSQL_DATABASE=deepgi
-            - MYSQL_ROOT_PASSWORD=abcdefg
-        volumes:
-            - ./mysql:/var/lib/mysql
-        networks:
-            - backend
-        healthcheck:
-            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-            interval: 10s
-            timeout: 5s
-            retries: 3
+    # db:
+    #     image: "mysql"
+    #     ports:
+    #         - 3306:3306
+    #     container_name: "deepgi_database"
+    #     environment:
+    #         - MYSQL_DATABASE=deepgi
+    #         - MYSQL_ROOT_PASSWORD=abcdefg
+    #     volumes:
+    #         - ./mysql:/var/lib/mysql
+    #     networks:
+    #         - backend
+    #     healthcheck:
+    #         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+    #         interval: 10s
+    #         timeout: 5s
+    #         retries: 3
 
     worker:
         image: deepgi-local/backend
@@ -55,7 +52,6 @@ services:
             - .:/app
         depends_on:
             - app
-            - db
         networks:
             - backend
         # deploy:

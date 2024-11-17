@@ -11,11 +11,14 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router"; // Import useRouter for redirection
 import StreamingOverlayMenu from "../components/StreamingOverlayMenu";
 import { MdFullscreen } from "react-icons/md";
 import useFullscreenStore from "../stores/fullscreenStore";
 
+
 const Streaming: React.FC = () => {
+  const router = useRouter();
   const localHTMLVideoRef = useRef<HTMLVideoElement>(null); // Reference to local video element
   const remoteHTMLVideoRef = useRef<HTMLVideoElement>(null); // Reference to remote video element
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null); // Reference to WebRTC peer connection
@@ -47,6 +50,22 @@ const Streaming: React.FC = () => {
   useEffect(() => {
     setScreenRef(remoteStreamingBoxRef.current);
   }, [isClient]);
+    // Poll the backend status
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hello`);
+        if (response.status !== 200) {
+          router.push("/dinosaur");
+        }
+      } catch (error) {
+        console.error("Error fetching status:", error);
+        router.push("/dinosaur");
+      }
+    }, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [router]);
 
   const startStream = async (stream: MediaStream) => {
     localMediaStreamRef.current = stream;
@@ -131,7 +150,8 @@ const Streaming: React.FC = () => {
     };
     
     
-    peerConnectionRef.current = new RTCPeerConnection(configuration);
+    //peerConnectionRef.current = new RTCPeerConnection(configuration);
+    peerConnectionRef.current = new RTCPeerConnection();
 
     // Conneting to remote peer
     peerConnectionRef.current.onicecandidate = (event) => {

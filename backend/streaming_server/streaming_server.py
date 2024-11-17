@@ -105,6 +105,7 @@ class StreamingServer:
 
     async def handle_offer(self, offer_sdp, offer_type):
         pc = RTCPeerConnection(configuration=self.configuration)
+        #pc = RTCPeerConnection()
         print("PEER_CONNECTION")
         # Store the connection
         connection_id = uuid.uuid4().hex
