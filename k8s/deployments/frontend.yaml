@@ -5,7 +5,7 @@ metadata:
   labels:
     app: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend
@@ -17,18 +17,18 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: punnyoz/frontend:latest
-          # imagePullPolicy: Never
+          image: punnyoz/frontend:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           command: [ "sh", 
             "-c", 
-            "echo 'NEXT_PUBLIC_BACKEND_URL=\"http://192.168.0.104/api\"\nNEXT_PUBLIC_SIGNALING_SERVER_URL=ws://192.168.0.104/api/webrtc/signaling/\nNEXT_PUBLIC_SAMPLE_URL=https://deepgi-example-picture.s3.ap-southeast-1.amazonaws.com/example-picture.zip\nNEXT_PUBLIC_STUNNER_URL=turn:35.198.197.253:3478?transport=udp' > .env.production && yarn build && yarn start" ]
+            "echo 'NEXT_PUBLIC_BACKEND_URL=\"http://192.168.0.104/api\"\nNEXT_PUBLIC_SIGNALING_SERVER_URL=ws://192.168.0.104/api/webrtc/signaling/\nNEXT_PUBLIC_SAMPLE_URL=https://deepgi-example-picture.s3.ap-southeast-1.amazonaws.com/example-picture.zip\nNEXT_PUBLIC_STUNNER_URL=turn:192.168.0.101?transport=udp' > .env.production && yarn build && yarn start" ]
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: deepgi-frontend-service
+  name: frontend-service
 spec:
   selector:
     app: frontend

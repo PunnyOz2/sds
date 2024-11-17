@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+  labels:
+    app: debug
+spec:
+  containers:
+    - name: debug-container
+      image: alpine:latest
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests:
+          memory: "32Mi"
+          cpu: "10m"
+      stdin: true
+      tty: true
+      env:
+        - name: TERM
+          value: xterm
+      securityContext:
+        allowPrivilegeEscalation: false
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod2
+  labels:
+    app: debug
+spec:
+  containers:
+    - name: debug-container
+      image: alpine:latest
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests:
+          memory: "32Mi"
+          cpu: "10m"
+      stdin: true
+      tty: true
+      env:
+        - name: TERM
+          value: xterm
+      securityContext:
+        allowPrivilegeEscalation: false
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod3
+  labels:
+    app: debug
+spec:
+  containers:
+    - name: debug-container
+      image: alpine:latest
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests:
+          memory: "32Mi"
+          cpu: "10m"
+      stdin: true
+      tty: true
+      env:
+        - name: TERM
+          value: xterm
+      securityContext:
+        allowPrivilegeEscalation: false
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod4
+  labels:
+    app: debug
+spec:
+  nodeName: raspberrypi-101
+  containers:
+    - name: debug-container
+      image: alpine:latest
+      command: ["sh", "-c", "sleep 3600"]
+      resources:
+        requests:
+          memory: "32Mi"
+          cpu: "10m"
+      stdin: true
+      tty: true
+      env:
+        - name: TERM
+          value: xterm
+      securityContext:
+        allowPrivilegeEscalation: false
+  restartPolicy: Always

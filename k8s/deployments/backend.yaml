@@ -17,17 +17,17 @@ spec:
     spec:
       containers:
         - name: backend
-          image: punnyoz/backend:latest
-          # imagePullPolicy: Never
+          image: punnyoz/backend:1.0
+          imagePullPolicy: IfNotPresent
           env:
             - name: REDIS_HOSTNAME
               value: "redis"
             - name: REDIS_URL
               value: "redis://redis:6379"
-            - name: ALLOWED_HOSTS # HOST URL ex. 34.101.61.75
+            - name: ALLOWED_HOST # HOST URL ex. 34.101.61.75
               value: "*"
             - name: CORS_ALLOWED_ORIGINS # Frontend URL ex. http://localhost:3000
-              value: "http://localhost:3000 http://127.0.0.1:3000 http://34.128.108.186 http://34.126.175.208"
+              value: "http://localhost:3000 http://127.0.0.1:3000 http://192.168.0.101 http://192.168.0.102 http://192.168.0.103 http://192.168.0.104 http://192.168.0.105"
           command: ['python', 'manage.py', 'runserver', '0.0.0.0:5000']
           ports:
             - containerPort: 5000
