@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-deployment
+  labels:
+    app: streaming-worker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: streaming-worker
+  template:
+    metadata:
+      name: streaming-pods
+      labels:
+        app: streaming-worker
+    spec:
+      containers:
+        - name: streaming-worker
+          image: punnyoz/backend:latest
+          # imagePullPolicy: Never
+          env:
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+            - name: USE_INFERENCE
+              value: "True"
+            - name: SIGNALING_SERVER_URL
+              value: "ws://deepgi-backend-service:5000/webrtc/signaling/"
+            - name: ALLOWED_HOST # HOST URL ex. 34.101.61.75
+              value: "*"
+            - name: CORS_ALLOWED_ORIGINS # Frontend URL ex. http://localhost:3000
+              value: "http://localhost:3000 http://127.0.0.1:3000 http://34.128.108.186 http://34.126.175.208"
+            - name: STUN_SERVER
+              value: "turn:35.198.197.253:3478?transport=udp"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streaming-service
+spec:
+  selector:
+    app: streaming-worker
+  ports:
+    - port: 5000
+      targetPort: 5000
